@@ -18,8 +18,7 @@ function localNow() {
 }
 function firstOfMonth(monthStr) {
   if (monthStr) return `${monthStr}-01`;
-  const d = new Date();
-  const m = d.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' }).slice(0, 7);
+  const m = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' }).slice(0, 7);
   return `${m}-01`;
 }
 function lastOfMonth(monthStr) {
@@ -37,7 +36,7 @@ function countWorkDays(startStr, endStr) {
   }
   return count;
 }
-function calcBalance(employee, startDate, endDate) {
+async function calcBalance(employee, startDate, endDate) {
   const today = localDate();
   const effectiveStart = employee.start_date > startDate ? employee.start_date : startDate;
   const effectiveEnd   = endDate > today ? today : endDate;
@@ -45,11 +44,11 @@ function calcBalance(employee, startDate, endDate) {
   if (!effectiveStart || !effectiveEnd || effectiveStart > effectiveEnd) {
     return { expected_minutes: 0, worked_minutes: 0, adjustment_minutes: 0, balance_minutes: 0, work_days: 0 };
   }
-  const work_days         = countWorkDays(effectiveStart, effectiveEnd);
-  const expected_minutes  = work_days * employee.daily_minutes;
-  const worked_minutes    = db.getTotalWorked(employee.id, effectiveStart, effectiveEnd);
-  const adjustment_minutes = db.getTotalAdjustments(employee.id, effectiveStart, effectiveEnd);
-  const balance_minutes   = (worked_minutes + adjustment_minutes) - expected_minutes;
+  const work_days          = countWorkDays(effectiveStart, effectiveEnd);
+  const expected_minutes   = work_days * employee.daily_minutes;
+  const worked_minutes     = await db.getTotalWorked(employee.id, effectiveStart, effectiveEnd);
+  const adjustment_minutes = await db.getTotalAdjustments(employee.id, effectiveStart, effectiveEnd);
+  const balance_minutes    = (worked_minutes + adjustment_minutes) - expected_minutes;
   return { expected_minutes, worked_minutes, adjustment_minutes, balance_minutes, work_days };
 }
 
@@ -58,7 +57,7 @@ function calcBalance(employee, startDate, endDate) {
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'll-ponto-dev-secret-mude-em-producao',
+  secret: process.env.SESSION_SECRET || 'll-ponto-dev-secret',
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 12 * 60 * 60 * 1000, httpOnly: true }
@@ -72,8 +71,8 @@ app.post('/api/ponto', async (req, res) => {
     return res.status(400).json({ error: 'PIN deve ter 4 dígitos' });
   }
 
-  const employees = db.getActiveEmployees();
-  const matches = await Promise.all(
+  const employees = await db.getActiveEmployees();
+  const matches   = await Promise.all(
     employees.map(emp => bcrypt.compare(pin, emp.pin_hash).then(ok => ok ? emp : null))
   );
   const employee = matches.find(Boolean);
@@ -81,21 +80,19 @@ app.post('/api/ponto', async (req, res) => {
 
   const today = localDate();
   const now   = localNow();
-  const open  = db.getOpenRecord(employee.id, today);
+  const open  = await db.getOpenRecord(employee.id, today);
 
   let action, worked_minutes = null;
   if (!open) {
-    db.clockIn(employee.id, today, now);
+    await db.clockIn(employee.id, today, now);
     action = 'entrada';
   } else {
     worked_minutes = Math.max(0, Math.round((new Date(now) - new Date(open.clock_in)) / 60000));
-    db.clockOut(open.id, now, worked_minutes);
+    await db.clockOut(open.id, now, worked_minutes);
     action = 'saida';
   }
 
-  const monthStart = firstOfMonth();
-  const balance    = calcBalance(employee, monthStart, today);
-
+  const balance = await calcBalance(employee, firstOfMonth(), today);
   res.json({ action, name: employee.name, time: now, worked_minutes, balance_month: balance.balance_minutes });
 });
 
@@ -108,7 +105,7 @@ function requireHR(req, res, next) {
 
 app.post('/api/rh/login', async (req, res) => {
   const { username, password } = req.body;
-  const user = db.getHRUser(username);
+  const user = await db.getHRUser(username);
   if (!user || !(await bcrypt.compare(password, user.password_hash))) {
     return res.status(401).json({ error: 'Usuário ou senha incorretos' });
   }
@@ -127,24 +124,25 @@ app.get('/api/rh/me', (req, res) => {
 
 // ── HR: employees ─────────────────────────────────────────────────────────────
 
-app.get('/api/rh/funcionarios', requireHR, (req, res) => {
+app.get('/api/rh/funcionarios', requireHR, async (req, res) => {
   const month   = req.query.month || localDate().slice(0, 7);
   const start   = firstOfMonth(month);
   const end     = lastOfMonth(month);
   const today   = localDate();
 
-  const result = db.getAllEmployees().map(emp => ({
+  const employees = await db.getAllEmployees();
+  const result = await Promise.all(employees.map(async emp => ({
     ...emp,
-    working_now: !!db.getOpenRecord(emp.id, today),
-    ...calcBalance(emp, start, end),
-    total_balance: calcBalance(emp, emp.start_date, today).balance_minutes
-  }));
+    working_now: !!(await db.getOpenRecord(emp.id, today)),
+    ...(await calcBalance(emp, start, end)),
+    total_balance: (await calcBalance(emp, emp.start_date, today)).balance_minutes
+  })));
 
   res.json(result);
 });
 
-app.get('/api/rh/funcionario/:id', requireHR, (req, res) => {
-  const emp = db.getEmployee(req.params.id);
+app.get('/api/rh/funcionario/:id', requireHR, async (req, res) => {
+  const emp = await db.getEmployee(req.params.id);
   if (!emp) return res.status(404).json({ error: 'Não encontrado' });
 
   const month  = req.query.month || localDate().slice(0, 7);
@@ -154,10 +152,10 @@ app.get('/api/rh/funcionario/:id', requireHR, (req, res) => {
 
   res.json({
     employee:     emp,
-    records:      db.getRecords(emp.id, start, end),
-    adjustments:  db.getAdjustments(emp.id, start, end),
-    balance:      calcBalance(emp, start, end),
-    totalBalance: calcBalance(emp, emp.start_date, today)
+    records:      await db.getRecords(emp.id, start, end),
+    adjustments:  await db.getAdjustments(emp.id, start, end),
+    balance:      await calcBalance(emp, start, end),
+    totalBalance: await calcBalance(emp, emp.start_date, today)
   });
 });
 
@@ -168,62 +166,62 @@ app.post('/api/rh/funcionario', requireHR, async (req, res) => {
 
   const daily_minutes = type === 'intern' ? 240 : 480;
   const pin_hash      = await bcrypt.hash(pin, 10);
-  const id            = db.createEmployee(name.trim(), pin_hash, type, daily_minutes, localDate());
+  const id            = await db.createEmployee(name.trim(), pin_hash, type, daily_minutes, localDate());
   res.json({ success: true, id });
 });
 
-app.put('/api/rh/funcionario/:id', requireHR, (req, res) => {
+app.put('/api/rh/funcionario/:id', requireHR, async (req, res) => {
   const { name, type, active } = req.body;
   if (!name?.trim() || !type) return res.status(400).json({ error: 'Nome e tipo são obrigatórios' });
-  db.updateEmployee(req.params.id, name.trim(), type, type === 'intern' ? 240 : 480, active ? 1 : 0);
+  await db.updateEmployee(req.params.id, name.trim(), type, type === 'intern' ? 240 : 480, active ? 1 : 0);
   res.json({ success: true });
 });
 
 app.put('/api/rh/funcionario/:id/pin', requireHR, async (req, res) => {
   if (!/^\d{4}$/.test(req.body.pin)) return res.status(400).json({ error: 'PIN deve ter 4 dígitos' });
-  db.updatePin(req.params.id, await bcrypt.hash(req.body.pin, 10));
+  await db.updatePin(req.params.id, await bcrypt.hash(req.body.pin, 10));
   res.json({ success: true });
 });
 
 // ── HR: adjustments ───────────────────────────────────────────────────────────
 
-app.post('/api/rh/ajuste', requireHR, (req, res) => {
+app.post('/api/rh/ajuste', requireHR, async (req, res) => {
   const { employee_id, minutes, reason, type } = req.body;
   if (!employee_id || minutes === undefined || !reason?.trim() || !type) {
     return res.status(400).json({ error: 'Preencha todos os campos' });
   }
-  db.addAdjustment(employee_id, parseInt(minutes), reason.trim(), type, req.session.hrUser.id);
+  await db.addAdjustment(employee_id, parseInt(minutes), reason.trim(), type, req.session.hrUser.id);
   res.json({ success: true });
 });
 
-app.delete('/api/rh/ajuste/:id', requireHR, (req, res) => {
-  db.deleteAdjustment(req.params.id);
+app.delete('/api/rh/ajuste/:id', requireHR, async (req, res) => {
+  await db.deleteAdjustment(req.params.id);
   res.json({ success: true });
 });
 
 // ── HR: time record edit ──────────────────────────────────────────────────────
 
-app.put('/api/rh/registro/:id', requireHR, (req, res) => {
+app.put('/api/rh/registro/:id', requireHR, async (req, res) => {
   const { clock_in, clock_out } = req.body;
   if (!clock_in) return res.status(400).json({ error: 'Horário de entrada é obrigatório' });
   const worked = clock_out
     ? Math.max(0, Math.round((new Date(clock_out) - new Date(clock_in)) / 60000))
     : null;
-  db.updateRecord(req.params.id, clock_in, clock_out || null, worked);
+  await db.updateRecord(req.params.id, clock_in, clock_out || null, worked);
   res.json({ success: true });
 });
 
 // ── HR: manage HR users ───────────────────────────────────────────────────────
 
-app.get('/api/rh/usuarios', requireHR, (req, res) => {
-  res.json(db.getAllHRUsers());
+app.get('/api/rh/usuarios', requireHR, async (req, res) => {
+  res.json(await db.getAllHRUsers());
 });
 
 app.post('/api/rh/usuario', requireHR, async (req, res) => {
   const { username, password } = req.body;
   if (!username?.trim() || !password) return res.status(400).json({ error: 'Usuário e senha obrigatórios' });
   try {
-    db.createHRUser(username.trim(), await bcrypt.hash(password, 10));
+    await db.createHRUser(username.trim(), await bcrypt.hash(password, 10));
     res.json({ success: true });
   } catch {
     res.status(400).json({ error: 'Usuário já existe' });
@@ -232,7 +230,7 @@ app.post('/api/rh/usuario', requireHR, async (req, res) => {
 
 app.put('/api/rh/usuario/:id/senha', requireHR, async (req, res) => {
   if (!req.body.password) return res.status(400).json({ error: 'Nova senha obrigatória' });
-  db.updateHRPassword(req.params.id, await bcrypt.hash(req.body.password, 10));
+  await db.updateHRPassword(req.params.id, await bcrypt.hash(req.body.password, 10));
   res.json({ success: true });
 });
 
