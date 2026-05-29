@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel RH — LL Audiovisual</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="rh-body">
+
+<!-- SVG da Logo LL -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="ll-logo" viewBox="0 0 628 670">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M85.1514 1.33767C84.9384 2.02567 84.4843 4.61267 84.1413 7.08767C82.8273 16.5707 81.5714 24.8117 80.5604 30.5877C79.9814 33.8877 79.0734 39.5127 78.5414 43.0877C78.0094 46.6627 77.1294 52.2877 76.5864 55.5877C76.0434 58.8877 75.1644 64.5127 74.6324 68.0877C74.1004 71.6627 73.2044 77.2877 72.6404 80.5877C70.7554 91.6177 68.5384 105.659 66.6394 118.588C66.0734 122.438 65.1414 128.288 64.5674 131.588C63.9944 134.888 63.1114 140.288 62.6064 143.588C62.1014 146.888 61.1734 152.513 60.5454 156.088C59.9164 159.663 59.0354 165.063 58.5874 168.088C58.1394 171.113 57.2424 176.738 56.5944 180.588C55.9464 184.438 55.0374 190.288 54.5744 193.588C53.7314 199.591 50.4304 220.293 48.5144 231.588C47.9554 234.888 47.0644 240.513 46.5354 244.088C46.0064 247.663 45.1294 253.288 44.5864 256.588C44.0434 259.888 43.3554 264.838 43.0574 267.588C42.7594 270.338 42.1164 274.163 41.6284 276.088C40.7364 279.602 40.3224 282.163 36.6134 307.088C35.5084 314.513 34.1864 322.838 33.6754 325.588C32.6794 330.949 31.7834 336.438 28.6974 356.088C27.6184 362.963 25.9874 373.313 25.0754 379.088C24.1624 384.863 22.8024 393.638 22.0544 398.588C21.3064 403.538 20.2514 410.288 19.7104 413.588C14.5284 445.222 12.3884 458.716 11.5454 465.088C10.9994 469.213 10.1284 474.838 9.60836 477.588C9.08936 480.338 8.16937 485.963 7.56437 490.088C6.06437 500.324 4.76636 508.537 3.61336 515.088C3.08136 518.113 2.17136 525.042 1.59136 530.485C1.01136 535.928 0.337365 540.704 0.0943652 541.097C-0.395635 541.89 1.10237 556.013 2.74537 566.088C6.90837 591.611 20.1254 616.008 39.9644 634.788C58.3124 652.156 81.5034 663.627 106.457 667.677C113.564 668.831 138.781 669.081 248.311 669.084L381.523 669.088L382.462 665.338C382.978 663.276 385.015 649.888 386.989 635.588C388.962 621.288 393.507 588.805 397.089 563.404C400.67 538.002 404 516.186 404 514.5L404.5 511.076H309.35C207.949 511.063 210.616 511.192 200.037 505.816C187.04 499.213 181.592 487.083 181.608 464.789C181.616 453.643 182.436 445.999 187.097 413.588C188.442 404.238 190.265 391.188 191.148 384.588C193.335 368.25 194.157 362.352 195.96 350.088C196.809 344.313 199.549 324.963 202.049 307.088C215.641 209.915 220.785 173.688 222.142 165.588C223.984 154.596 235.741 73.7157 241.511 32.3467C243.831 15.7137 245.448 1.65167 245.105 1.09667C244.109 -0.516332 85.6504 -0.277334 85.1514 1.33767Z" fill="white"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M542.448 667.75C542.661 667.062 543.115 664.475 543.458 662C544.772 652.517 546.028 644.276 547.039 638.5C547.618 635.2 548.526 629.575 549.058 626C549.59 622.425 550.47 616.8 551.013 613.5C551.556 610.2 552.435 604.575 552.967 601C553.499 597.425 554.395 591.8 554.959 588.5C556.844 577.47 559.061 563.429 560.96 550.5C561.526 546.65 562.458 540.8 563.032 537.5C563.605 534.2 564.488 528.8 564.993 525.5C565.498 522.2 566.426 516.575 567.054 513C567.683 509.425 568.564 504.025 569.012 501C569.46 497.975 570.357 492.35 571.005 488.5C571.653 484.65 572.562 478.8 573.025 475.5C573.868 469.497 577.169 448.795 579.085 437.5C579.644 434.2 580.535 428.575 581.064 425C581.593 421.425 582.47 415.8 583.013 412.5C583.556 409.2 584.244 404.25 584.542 401.5C584.84 398.75 585.483 394.925 585.971 393C586.863 389.486 587.277 386.925 590.986 362C592.091 354.575 593.413 346.25 593.924 343.5C594.92 338.139 595.816 332.65 598.902 313C599.981 306.125 601.612 295.775 602.524 290C603.437 284.225 604.797 275.45 605.545 270.5C606.293 265.55 607.348 258.8 607.889 255.5C613.071 223.866 615.211 210.372 616.054 204C616.6 199.875 617.471 194.25 617.991 191.5C618.51 188.75 619.43 183.125 620.035 179C621.535 168.764 622.833 160.551 623.986 154C624.518 150.975 625.428 144.046 626.008 138.603C626.588 133.16 627.262 128.384 627.505 127.991C627.995 127.198 626.497 113.075 624.854 103C620.691 77.4768 607.474 53.0798 587.635 34.2998C569.287 16.9318 546.096 5.46082 521.142 1.41082C514.035 0.256818 488.818 0.00683308 379.288 0.00382351L246.076 -0.000216459L245.137 3.74978C244.621 5.81178 242.584 19.1998 240.61 33.4998C238.637 47.7998 234.092 80.2828 230.51 105.684C226.929 131.086 224 151.814 224 153.5L223.331 158.012L318.249 158.012C419.65 158.025 416.983 157.896 427.562 163.272C440.559 169.875 446.007 182.005 445.991 204.299C445.983 215.445 445.163 223.089 440.502 255.5C439.157 264.85 437.334 277.9 436.451 284.5C434.264 300.838 433.442 306.736 431.639 319C430.79 324.775 428.05 344.125 425.55 362C411.958 459.173 406.814 495.4 405.457 503.5C403.615 514.492 391.858 595.372 386.088 636.741C383.768 653.374 381.5 669 381.5 669C381.5 669 541.949 669.365 542.448 667.75Z" fill="#01C4A6"/>
+  </symbol>
+</svg>
+
+<!-- ── Login ───────────────────────────────────────────── -->
+<div id="view-login" class="rh-login">
+  <!-- Blobs de fundo — identidade LL -->
+  <div class="bg-blob bg-blob-1" aria-hidden="true"></div>
+  <div class="bg-blob bg-blob-2" aria-hidden="true"></div>
+  <div class="bg-grad" aria-hidden="true"></div>
+
+  <div class="login-card">
+    <div class="login-logo">
+      <svg class="ll-mark" viewBox="0 0 628 670" fill="none" aria-hidden="true"><use href="#ll-logo"/></svg>
+      <div class="ll-wordmark">
+        <span class="ll-name">LL</span>
+        <span class="ll-sub">Audiovisual</span>
+      </div>
+    </div>
+    <h1 style="font-size:18px;margin-bottom:4px">Painel RH</h1>
+    <p>Recursos Humanos — LL Audiovisual</p>
+    <form id="login-form">
+      <div class="form-group">
+        <label>Usuário</label>
+        <input type="text" id="login-user" autocomplete="username" required>
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="login-pass" autocomplete="current-password" required>
+      </div>
+      <p id="login-error" class="hidden" style="color:var(--error);font-size:13px;margin-bottom:12px"></p>
+      <button type="submit" class="btn btn-primary" style="width:100%">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<!-- ── App ─────────────────────────────────────────────── -->
+<div id="view-app" class="rh-app hidden">
+
+  <nav class="rh-topbar">
+    <div class="logo-area">
+      <svg class="ll-mark" viewBox="0 0 628 670" fill="none" aria-hidden="true"><use href="#ll-logo"/></svg>
+      <span class="logo-name">LL</span>
+      <span class="logo-sep">·</span>
+      <span class="logo-rh">RH</span>
+    </div>
+    <span class="rh-user" id="rh-username"></span>
+    <a href="/" class="btn btn-ghost btn-sm">Terminal</a>
+    <button class="btn btn-ghost btn-sm" id="btn-logout">Sair</button>
+  </nav>
+
+  <div class="rh-content">
+
+    <!-- Overview -->
+    <div id="view-overview">
+      <!-- Stats -->
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card"><div class="label">Funcionários ativos</div><div class="value" id="s-total">—</div></div>
+        <div class="stat-card"><div class="label">Presentes agora</div><div class="value pos" id="s-present">—</div></div>
+        <div class="stat-card"><div class="label">Com saldo positivo</div><div class="value pos" id="s-pos">—</div></div>
+        <div class="stat-card"><div class="label">Com saldo negativo</div><div class="value neg" id="s-neg">—</div></div>
+      </div>
+
+      <!-- Employee table -->
+      <div class="section-header">
+        <h2>Funcionários</h2>
+        <div class="month-nav">
+          <button id="prev-month">‹</button>
+          <span id="month-label">—</span>
+          <button id="next-month">›</button>
+        </div>
+        <button class="btn btn-primary btn-sm" id="btn-new-emp">+ Funcionário</button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Status</th>
+                <th>Esperado</th>
+                <th>Trabalhado</th>
+                <th>Ajustes</th>
+                <th>Saldo do Mês</th>
+                <th>Saldo Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="emp-table-body">
+              <tr><td colspan="9" style="text-align:center;color:var(--muted);padding:32px">Carregando…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail view -->
+    <div id="view-detail" class="hidden">
+      <div class="detail-header">
+        <div class="info">
+          <h2 id="d-name">—</h2>
+          <p id="d-meta">—</p>
+        </div>
+        <div class="detail-balances">
+          <div class="bal-item">
+            <div class="bal-label">Saldo do Mês</div>
+            <div class="bal-value" id="d-bal-month">—</div>
+          </div>
+          <div class="bal-item">
+            <div class="bal-label">Saldo Total</div>
+            <div class="bal-value" id="d-bal-total">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-bar">
+        <button class="btn btn-ghost btn-sm" id="btn-back">← Voltar</button>
+        <div class="month-nav">
+          <button id="d-prev-month">‹</button>
+          <span id="d-month-label">—</span>
+          <button id="d-next-month">›</button>
+        </div>
+        <button class="btn btn-primary btn-sm" id="btn-ajuste">+ Ajuste</button>
+        <button class="btn btn-ghost btn-sm" id="btn-edit-emp">Editar</button>
+        <button class="btn btn-ghost btn-sm" id="btn-reset-pin">Alterar PIN</button>
+      </div>
+
+      <!-- Records -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-header">
+          <h3>Registros de Ponto</h3>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Data</th><th>Entrada</th><th>Saída</th><th>Total</th><th></th></tr>
+            </thead>
+            <tbody id="records-body">
+              <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum registro</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Adjustments -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Ajustes Manuais</h3>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Data</th><th>Tipo</th><th>Horas</th><th>Motivo</th><th></th></tr>
+            </thead>
+            <tbody id="adjustments-body">
+              <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum ajuste</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Modals ───────────────────────────────────────────── -->
+
+<!-- New / Edit Employee -->
+<div id="modal-emp" class="modal-backdrop hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="modal-emp">✕</button>
+    <h3 id="modal-emp-title">Novo Funcionário</h3>
+    <form id="form-emp">
+      <input type="hidden" id="emp-id">
+      <div class="form-group">
+        <label>Nome completo</label>
+        <input type="text" id="emp-name" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="emp-type">
+            <option value="employee">Funcionário (8h/dia)</option>
+            <option value="intern">Estagiário (4h/dia)</option>
+          </select>
+        </div>
+        <div class="form-group" id="pin-group">
+          <label>PIN (4 dígitos)</label>
+          <input type="text" id="emp-pin" maxlength="4" pattern="\d{4}" placeholder="0000">
+        </div>
+      </div>
+      <div class="form-group" id="active-group" style="display:none">
+        <label>
+          <input type="checkbox" id="emp-active" style="width:auto;margin-right:6px">
+          Funcionário ativo
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close="modal-emp">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Adjustment -->
+<div id="modal-ajuste" class="modal-backdrop hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="modal-ajuste">✕</button>
+    <h3>Adicionar Ajuste</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">
+      Funcionário: <strong id="ajuste-emp-name">—</strong>
+    </p>
+    <form id="form-ajuste">
+      <input type="hidden" id="ajuste-emp-id">
+      <input type="hidden" id="ajuste-daily-mins">
+      <div class="form-group">
+        <label>Tipo de ajuste</label>
+        <select id="ajuste-type" onchange="onAjusteTypeChange()">
+          <option value="folga">Folga (crédito de 1 dia)</option>
+          <option value="hora_extra">Hora Extra (crédito)</option>
+          <option value="debito">Débito (desconto)</option>
+          <option value="correcao">Correção manual</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Horas</label>
+          <input type="number" id="ajuste-h" min="0" max="99" value="0">
+        </div>
+        <div class="form-group">
+          <label>Minutos</label>
+          <input type="number" id="ajuste-m" min="0" max="59" value="0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Motivo</label>
+        <input type="text" id="ajuste-reason" placeholder="Ex: Reunião externa, Emenda de feriado…" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close="modal-ajuste">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Confirmar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit time record -->
+<div id="modal-record" class="modal-backdrop hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="modal-record">✕</button>
+    <h3>Editar Registro</h3>
+    <form id="form-record">
+      <input type="hidden" id="record-id">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Entrada</label>
+          <input type="time" id="record-in" required>
+        </div>
+        <div class="form-group">
+          <label>Saída</label>
+          <input type="time" id="record-out">
+        </div>
+      </div>
+      <input type="hidden" id="record-date">
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close="modal-record">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Reset PIN -->
+<div id="modal-pin" class="modal-backdrop hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="modal-pin">✕</button>
+    <h3>Alterar PIN</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">
+      Funcionário: <strong id="pin-emp-name">—</strong>
+    </p>
+    <form id="form-pin">
+      <input type="hidden" id="pin-emp-id">
+      <div class="form-group">
+        <label>Novo PIN (4 dígitos)</label>
+        <input type="text" id="new-pin" maxlength="4" pattern="\d{4}" placeholder="0000" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close="modal-pin">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="hidden"></div>
+
+<script>
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function fmt(mins) {
+  if (mins == null || mins === 0) return '0h00min';
+  const s = mins < 0 ? '-' : '+';
+  const a = Math.abs(mins);
+  return `${s}${Math.floor(a/60)}h${String(a%60).padStart(2,'0')}min`;
+}
+function fmtAbs(mins) {
+  if (mins == null) return '—';
+  const a = Math.abs(mins);
+  return `${Math.floor(a/60)}h${String(a%60).padStart(2,'0')}min`;
+}
+function fmtTime(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+}
+function fmtDate(dateStr) {
+  if (!dateStr) return '—';
+  return new Date(dateStr + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', weekday:'short' });
+}
+function balClass(mins) {
+  return mins > 0 ? 'bal-pos' : mins < 0 ? 'bal-neg' : 'bal-zero';
+}
+
+let toastTimer;
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = type ? `toast-${type}` : '';
+  el.classList.remove('hidden');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add('hidden'), 3000);
+}
+
+async function api(method, url, body) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  const res  = await fetch(url, opts);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Erro desconhecido');
+  return data;
+}
+
+// ── Month navigation ──────────────────────────────────────────────────────────
+
+function monthLabel(m) {
+  const [y, mo] = m.split('-');
+  const d = new Date(+y, +mo - 1, 1);
+  return d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+           .replace(/^\w/, c => c.toUpperCase());
+}
+function addMonth(m, n) {
+  const [y, mo] = m.split('-').map(Number);
+  const d = new Date(y, mo - 1 + n, 1);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+
+let currentMonth = new Date().toISOString().slice(0, 7);
+let detailMonth  = currentMonth;
+
+// ── Modal helpers ─────────────────────────────────────────────────────────────
+
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => closeModal(btn.dataset.close));
+});
+document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+  backdrop.addEventListener('click', e => {
+    if (e.target === backdrop) closeModal(backdrop.id);
+  });
+});
+
+// ── State ─────────────────────────────────────────────────────────────────────
+
+let currentEmpId = null;
+let currentEmpData = null;
+
+// ── Views ─────────────────────────────────────────────────────────────────────
+
+function showOverview() {
+  document.getElementById('view-overview').classList.remove('hidden');
+  document.getElementById('view-detail').classList.add('hidden');
+  currentEmpId = null;
+  loadOverview();
+}
+
+function showDetail(empId) {
+  currentEmpId = empId;
+  document.getElementById('view-overview').classList.add('hidden');
+  document.getElementById('view-detail').classList.remove('hidden');
+  loadDetail();
+}
+
+// ── Overview ──────────────────────────────────────────────────────────────────
+
+async function loadOverview() {
+  document.getElementById('month-label').textContent = monthLabel(currentMonth);
+  try {
+    const employees = await api('GET', `/api/rh/funcionarios?month=${currentMonth}`);
+    renderEmpTable(employees);
+    renderStats(employees);
+  } catch (e) {
+    toast(e.message, 'error');
+  }
+}
+
+function renderStats(employees) {
+  const active  = employees.filter(e => e.active);
+  const present = active.filter(e => e.working_now).length;
+  const pos     = active.filter(e => e.balance_minutes > 0).length;
+  const neg     = active.filter(e => e.balance_minutes < 0).length;
+  document.getElementById('s-total').textContent   = active.length;
+  document.getElementById('s-present').textContent = present;
+  document.getElementById('s-pos').textContent     = pos;
+  document.getElementById('s-neg').textContent     = neg;
+}
+
+const TYPE_LABEL = { employee: 'Funcionário', intern: 'Estagiário' };
+
+function renderEmpTable(employees) {
+  const tbody = document.getElementById('emp-table-body');
+  if (!employees.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:32px">Nenhum funcionário cadastrado</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = employees.map(emp => {
+    const bc = balClass(emp.balance_minutes);
+    const tc = balClass(emp.total_balance);
+    const isActive = emp.active ? '' : 'style="opacity:.5"';
+    return `<tr ${isActive}>
+      <td><strong>${emp.name}</strong></td>
+      <td>
+        <span class="badge ${emp.type === 'intern' ? 'badge-intern' : 'badge-func'}">
+          ${TYPE_LABEL[emp.type] || emp.type}
+        </span>
+      </td>
+      <td>
+        <span class="dot ${emp.working_now ? 'dot-on' : 'dot-off'}"></span>
+        ${emp.working_now ? 'Presente' : emp.active ? 'Ausente' : 'Inativo'}
+      </td>
+      <td>${fmtAbs(emp.expected_minutes)}</td>
+      <td>${fmtAbs(emp.worked_minutes)}</td>
+      <td>${fmt(emp.adjustment_minutes)}</td>
+      <td class="${bc}">${fmt(emp.balance_minutes)}</td>
+      <td class="${tc}">${fmt(emp.total_balance)}</td>
+      <td style="white-space:nowrap">
+        <button class="icon-btn" title="Ver histórico" onclick="showDetail(${emp.id})">🔍</button>
+        <button class="icon-btn" title="Ajuste rápido" onclick="openAjusteModal(${emp.id},'${emp.name.replace(/'/g,"\\'")}',${emp.daily_minutes})">⊕</button>
+        <button class="icon-btn" title="Editar" onclick="openEditEmp(${emp.id},'${emp.name.replace(/'/g,"\\'")}','${emp.type}',${emp.active})">✏️</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Detail ────────────────────────────────────────────────────────────────────
+
+async function loadDetail() {
+  document.getElementById('d-month-label').textContent = monthLabel(detailMonth);
+  try {
+    const d = await api('GET', `/api/rh/funcionario/${currentEmpId}?month=${detailMonth}`);
+    currentEmpData = d;
+
+    document.getElementById('d-name').textContent = d.employee.name;
+    document.getElementById('d-meta').textContent =
+      `${TYPE_LABEL[d.employee.type]} · ${d.employee.daily_minutes/60}h/dia · Desde ${fmtDate(d.employee.start_date)}`;
+
+    const bm = d.balance.balance_minutes;
+    const bt = d.totalBalance.balance_minutes;
+    document.getElementById('d-bal-month').textContent = fmt(bm);
+    document.getElementById('d-bal-month').className   = 'bal-value ' + balClass(bm);
+    document.getElementById('d-bal-total').textContent = fmt(bt);
+    document.getElementById('d-bal-total').className   = 'bal-value ' + balClass(bt);
+
+    renderRecords(d.records);
+    renderAdjustments(d.adjustments);
+  } catch(e) {
+    toast(e.message, 'error');
+  }
+}
+
+function renderRecords(records) {
+  const tbody = document.getElementById('records-body');
+  if (!records.length) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum registro neste período</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = records.map(r => `
+    <tr>
+      <td>${fmtDate(r.record_date)}</td>
+      <td>${fmtTime(r.clock_in)}</td>
+      <td>${r.clock_out ? fmtTime(r.clock_out) : '<span style="color:var(--warning)">Em andamento</span>'}</td>
+      <td>${r.worked_minutes != null ? fmtAbs(r.worked_minutes) : '—'}</td>
+      <td>
+        <button class="icon-btn" title="Editar" onclick="openEditRecord(${r.id},'${r.record_date}','${r.clock_in}','${r.clock_out||''}')">✏️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+const ADJ_LABELS = {
+  folga: 'Folga', hora_extra: 'Hora Extra', debito: 'Débito', correcao: 'Correção'
+};
+
+function renderAdjustments(adjustments) {
+  const tbody = document.getElementById('adjustments-body');
+  if (!adjustments.length) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum ajuste neste período</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = adjustments.map(a => {
+    const bc = balClass(a.minutes);
+    return `<tr>
+      <td>${fmtDate(a.created_at?.split('T')[0] || a.created_at)}</td>
+      <td><span class="badge ${a.minutes >= 0 ? 'badge-active' : 'badge-intern'}">${ADJ_LABELS[a.type] || a.type}</span></td>
+      <td class="${bc}">${fmt(a.minutes)}</td>
+      <td>${a.reason}</td>
+      <td><button class="icon-btn del" title="Remover" onclick="deleteAjuste(${a.id})">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Employee form ─────────────────────────────────────────────────────────────
+
+function openNewEmp() {
+  document.getElementById('modal-emp-title').textContent = 'Novo Funcionário';
+  document.getElementById('emp-id').value = '';
+  document.getElementById('emp-name').value = '';
+  document.getElementById('emp-type').value = 'employee';
+  document.getElementById('emp-pin').value = '';
+  document.getElementById('pin-group').style.display = '';
+  document.getElementById('active-group').style.display = 'none';
+  openModal('modal-emp');
+}
+
+function openEditEmp(id, name, type, active) {
+  document.getElementById('modal-emp-title').textContent = 'Editar Funcionário';
+  document.getElementById('emp-id').value    = id;
+  document.getElementById('emp-name').value  = name;
+  document.getElementById('emp-type').value  = type;
+  document.getElementById('emp-pin').value   = '';
+  document.getElementById('pin-group').style.display    = 'none';
+  document.getElementById('active-group').style.display = '';
+  document.getElementById('emp-active').checked = !!active;
+  openModal('modal-emp');
+}
+
+document.getElementById('btn-new-emp').addEventListener('click', openNewEmp);
+document.getElementById('btn-edit-emp').addEventListener('click', () => {
+  if (currentEmpData) {
+    const e = currentEmpData.employee;
+    openEditEmp(e.id, e.name, e.type, e.active);
+  }
+});
+
+document.getElementById('form-emp').addEventListener('submit', async e => {
+  e.preventDefault();
+  const id     = document.getElementById('emp-id').value;
+  const name   = document.getElementById('emp-name').value.trim();
+  const type   = document.getElementById('emp-type').value;
+  const pin    = document.getElementById('emp-pin').value;
+  const active = document.getElementById('emp-active').checked;
+  try {
+    if (id) {
+      await api('PUT', `/api/rh/funcionario/${id}`, { name, type, active });
+    } else {
+      await api('POST', '/api/rh/funcionario', { name, type, pin });
+    }
+    closeModal('modal-emp');
+    toast('Funcionário salvo!', 'success');
+    if (currentEmpId) loadDetail(); else loadOverview();
+  } catch(err) {
+    toast(err.message, 'error');
+  }
+});
+
+// ── Adjustment form ───────────────────────────────────────────────────────────
+
+function openAjusteModal(empId, empName, dailyMins) {
+  document.getElementById('ajuste-emp-id').value    = empId;
+  document.getElementById('ajuste-emp-name').textContent = empName;
+  document.getElementById('ajuste-daily-mins').value = dailyMins;
+  document.getElementById('ajuste-type').value    = 'folga';
+  document.getElementById('ajuste-reason').value  = '';
+  onAjusteTypeChange();
+  openModal('modal-ajuste');
+}
+
+function onAjusteTypeChange() {
+  const type      = document.getElementById('ajuste-type').value;
+  const daily     = parseInt(document.getElementById('ajuste-daily-mins').value) || 480;
+  const defaultH  = Math.floor(daily / 60);
+  const defaultM  = daily % 60;
+
+  if (type === 'folga') {
+    document.getElementById('ajuste-h').value = defaultH;
+    document.getElementById('ajuste-m').value = defaultM;
+    document.getElementById('ajuste-reason').value = 'Folga';
+  } else if (type === 'debito') {
+    document.getElementById('ajuste-h').value = defaultH;
+    document.getElementById('ajuste-m').value = defaultM;
+    document.getElementById('ajuste-reason').value = '';
+  } else {
+    document.getElementById('ajuste-h').value = 0;
+    document.getElementById('ajuste-m').value = 0;
+  }
+}
+
+document.getElementById('btn-ajuste').addEventListener('click', () => {
+  if (currentEmpData) {
+    const e = currentEmpData.employee;
+    openAjusteModal(e.id, e.name, e.daily_minutes);
+  }
+});
+
+document.getElementById('form-ajuste').addEventListener('submit', async e => {
+  e.preventDefault();
+  const empId  = document.getElementById('ajuste-emp-id').value;
+  const type   = document.getElementById('ajuste-type').value;
+  const h      = parseInt(document.getElementById('ajuste-h').value) || 0;
+  const m      = parseInt(document.getElementById('ajuste-m').value) || 0;
+  const reason = document.getElementById('ajuste-reason').value.trim();
+  const sign   = type === 'debito' ? -1 : 1;
+  const minutes = sign * (h * 60 + m);
+  try {
+    await api('POST', '/api/rh/ajuste', { employee_id: empId, minutes, reason, type });
+    closeModal('modal-ajuste');
+    toast('Ajuste registrado!', 'success');
+    if (currentEmpId) loadDetail(); else loadOverview();
+  } catch(err) {
+    toast(err.message, 'error');
+  }
+});
+
+async function deleteAjuste(id) {
+  if (!confirm('Remover este ajuste?')) return;
+  try {
+    await api('DELETE', `/api/rh/ajuste/${id}`);
+    toast('Ajuste removido.', 'success');
+    loadDetail();
+  } catch(err) {
+    toast(err.message, 'error');
+  }
+}
+
+// ── Record edit ───────────────────────────────────────────────────────────────
+
+function openEditRecord(id, date, clockIn, clockOut) {
+  document.getElementById('record-id').value   = id;
+  document.getElementById('record-date').value = date;
+  document.getElementById('record-in').value   = clockIn ? clockIn.slice(11,16) : '';
+  document.getElementById('record-out').value  = clockOut ? clockOut.slice(11,16) : '';
+  openModal('modal-record');
+}
+
+document.getElementById('form-record').addEventListener('submit', async e => {
+  e.preventDefault();
+  const id    = document.getElementById('record-id').value;
+  const date  = document.getElementById('record-date').value;
+  const inT   = document.getElementById('record-in').value;
+  const outT  = document.getElementById('record-out').value;
+  const ci    = date + 'T' + inT + ':00';
+  const co    = outT ? date + 'T' + outT + ':00' : null;
+  try {
+    await api('PUT', `/api/rh/registro/${id}`, { clock_in: ci, clock_out: co });
+    closeModal('modal-record');
+    toast('Registro atualizado!', 'success');
+    loadDetail();
+  } catch(err) {
+    toast(err.message, 'error');
+  }
+});
+
+// ── PIN reset ─────────────────────────────────────────────────────────────────
+
+document.getElementById('btn-reset-pin').addEventListener('click', () => {
+  if (currentEmpData) {
+    document.getElementById('pin-emp-id').value = currentEmpData.employee.id;
+    document.getElementById('pin-emp-name').textContent = currentEmpData.employee.name;
+    document.getElementById('new-pin').value = '';
+    openModal('modal-pin');
+  }
+});
+
+document.getElementById('form-pin').addEventListener('submit', async e => {
+  e.preventDefault();
+  const id  = document.getElementById('pin-emp-id').value;
+  const pin = document.getElementById('new-pin').value;
+  try {
+    await api('PUT', `/api/rh/funcionario/${id}/pin`, { pin });
+    closeModal('modal-pin');
+    toast('PIN alterado!', 'success');
+  } catch(err) {
+    toast(err.message, 'error');
+  }
+});
+
+// ── Month nav ──────────────────────────────────────────────────────────────────
+
+document.getElementById('prev-month').addEventListener('click', () => {
+  currentMonth = addMonth(currentMonth, -1);
+  loadOverview();
+});
+document.getElementById('next-month').addEventListener('click', () => {
+  currentMonth = addMonth(currentMonth, +1);
+  loadOverview();
+});
+document.getElementById('d-prev-month').addEventListener('click', () => {
+  detailMonth = addMonth(detailMonth, -1);
+  loadDetail();
+});
+document.getElementById('d-next-month').addEventListener('click', () => {
+  detailMonth = addMonth(detailMonth, +1);
+  loadDetail();
+});
+
+// ── Back button ───────────────────────────────────────────────────────────────
+
+document.getElementById('btn-back').addEventListener('click', showOverview);
+
+// ── Login / logout ────────────────────────────────────────────────────────────
+
+document.getElementById('login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const username = document.getElementById('login-user').value.trim();
+  const password = document.getElementById('login-pass').value;
+  const errEl    = document.getElementById('login-error');
+  try {
+    const data = await api('POST', '/api/rh/login', { username, password });
+    document.getElementById('rh-username').textContent = data.username;
+    document.getElementById('view-login').classList.add('hidden');
+    document.getElementById('view-app').classList.remove('hidden');
+    errEl.classList.add('hidden');
+    loadOverview();
+  } catch(err) {
+    errEl.textContent = err.message;
+    errEl.classList.remove('hidden');
+  }
+});
+
+document.getElementById('btn-logout').addEventListener('click', async () => {
+  await api('POST', '/api/rh/logout');
+  document.getElementById('view-app').classList.add('hidden');
+  document.getElementById('view-login').classList.remove('hidden');
+  document.getElementById('login-pass').value = '';
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+(async () => {
+  try {
+    const me = await api('GET', '/api/rh/me');
+    if (me.authenticated) {
+      document.getElementById('rh-username').textContent = me.username;
+      document.getElementById('view-login').classList.add('hidden');
+      document.getElementById('view-app').classList.remove('hidden');
+      loadOverview();
+    }
+  } catch {}
+})();
+</script>
+</body>
+</html>

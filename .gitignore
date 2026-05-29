@@ -1,0 +1,7 @@
+node_modules/
+ponto.db
+ponto.db-shm
+ponto.db-wal
+.env
+.DS_Store
+*.log
