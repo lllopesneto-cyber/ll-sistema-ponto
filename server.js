@@ -131,12 +131,18 @@ app.get('/api/rh/funcionarios', requireHR, async (req, res) => {
   const today   = localDate();
 
   const employees = await db.getAllEmployees();
-  const result = await Promise.all(employees.map(async emp => ({
-    ...emp,
-    working_now: !!(await db.getOpenRecord(emp.id, today)),
-    ...(await calcBalance(emp, start, end)),
-    total_balance: (await calcBalance(emp, emp.start_date, today)).balance_minutes
-  })));
+  const result = await Promise.all(employees.map(async emp => {
+    const lastPunch = await db.getLastPunch(emp.id);
+    return {
+      ...emp,
+      working_now: !!(await db.getOpenRecord(emp.id, today)),
+      ...(await calcBalance(emp, start, end)),
+      total_balance: (await calcBalance(emp, emp.start_date, today)).balance_minutes,
+      last_punch_date: lastPunch?.record_date || null,
+      last_punch_in:   lastPunch?.clock_in    || null,
+      last_punch_out:  lastPunch?.clock_out   || null
+    };
+  }));
 
   res.json(result);
 });

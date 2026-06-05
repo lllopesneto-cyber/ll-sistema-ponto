@@ -85,6 +85,8 @@ module.exports = {
     q1('SELECT * FROM time_records WHERE employee_id=$1 AND record_date=$2 AND clock_out IS NULL ORDER BY id DESC LIMIT 1', [empId, date]),
   getLastRecord: (empId, date) =>
     q1('SELECT * FROM time_records WHERE employee_id=$1 AND record_date=$2 ORDER BY id DESC LIMIT 1', [empId, date]),
+  getLastPunch: (empId) =>
+    q1('SELECT * FROM time_records WHERE employee_id=$1 ORDER BY record_date DESC, id DESC LIMIT 1', [empId]),
   clockIn:  (empId, date, time) =>
     run('INSERT INTO time_records (employee_id, record_date, clock_in) VALUES ($1,$2,$3)', [empId, date, time]),
   clockOut: (recId, time, mins) =>
