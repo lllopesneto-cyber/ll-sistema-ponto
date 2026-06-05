@@ -25,7 +25,7 @@ async function migrate() {
       name TEXT NOT NULL,
       pin_hash TEXT NOT NULL,
       type TEXT NOT NULL DEFAULT 'employee',
-      daily_minutes INTEGER NOT NULL DEFAULT 480,
+      daily_minutes INTEGER NOT NULL DEFAULT 450,
       active INTEGER NOT NULL DEFAULT 1,
       start_date DATE NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

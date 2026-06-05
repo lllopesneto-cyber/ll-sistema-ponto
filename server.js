@@ -170,7 +170,7 @@ app.post('/api/rh/funcionario', requireHR, async (req, res) => {
   if (!name?.trim() || !type) return res.status(400).json({ error: 'Nome e tipo são obrigatórios' });
   if (!/^\d{4}$/.test(pin))  return res.status(400).json({ error: 'PIN deve ter exatamente 4 dígitos' });
 
-  const daily_minutes = type === 'intern' ? 240 : 480;
+  const daily_minutes = type === 'intern' ? 240 : 450;
   const pin_hash      = await bcrypt.hash(pin, 10);
   const id            = await db.createEmployee(name.trim(), pin_hash, type, daily_minutes, localDate());
   res.json({ success: true, id });
@@ -179,7 +179,7 @@ app.post('/api/rh/funcionario', requireHR, async (req, res) => {
 app.put('/api/rh/funcionario/:id', requireHR, async (req, res) => {
   const { name, type, active } = req.body;
   if (!name?.trim() || !type) return res.status(400).json({ error: 'Nome e tipo são obrigatórios' });
-  await db.updateEmployee(req.params.id, name.trim(), type, type === 'intern' ? 240 : 480, active ? 1 : 0);
+  await db.updateEmployee(req.params.id, name.trim(), type, type === 'intern' ? 240 : 450, active ? 1 : 0);
   res.json({ success: true });
 });
 

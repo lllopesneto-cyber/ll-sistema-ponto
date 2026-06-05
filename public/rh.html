@@ -197,7 +197,7 @@
         <div class="form-group">
           <label>Tipo</label>
           <select id="emp-type">
-            <option value="employee">Funcionário (8h/dia)</option>
+            <option value="employee">Funcionário (7h30/dia)</option>
             <option value="intern">Estagiário (4h/dia)</option>
           </select>
         </div>
@@ -355,6 +355,11 @@ function fmtLastPunch(emp) {
 function balClass(mins) {
   return mins > 0 ? 'bal-pos' : mins < 0 ? 'bal-neg' : 'bal-zero';
 }
+function fmtDailyHours(mins) {
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return m === 0 ? `${h}h/dia` : `${h}h${String(m).padStart(2,'0')}/dia`;
+}
 
 let toastTimer;
 function toast(msg, type = '') {
@@ -499,7 +504,7 @@ async function loadDetail() {
 
     document.getElementById('d-name').textContent = d.employee.name;
     document.getElementById('d-meta').textContent =
-      `${TYPE_LABEL[d.employee.type]} · ${d.employee.daily_minutes/60}h/dia · Desde ${fmtDate(d.employee.start_date)}`;
+      `${TYPE_LABEL[d.employee.type]} · ${fmtDailyHours(d.employee.daily_minutes)} · Desde ${fmtDate(d.employee.start_date)}`;
 
     const bm = d.balance.balance_minutes;
     const bt = d.totalBalance.balance_minutes;
@@ -649,7 +654,7 @@ function openAjusteModal(empId, empName, dailyMins) {
 
 function onAjusteTypeChange() {
   const type      = document.getElementById('ajuste-type').value;
-  const daily     = parseInt(document.getElementById('ajuste-daily-mins').value) || 480;
+  const daily     = parseInt(document.getElementById('ajuste-daily-mins').value) || 450;
   const defaultH  = Math.floor(daily / 60);
   const defaultM  = daily % 60;
 
