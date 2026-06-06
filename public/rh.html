@@ -213,6 +213,8 @@
         </label>
       </div>
       <div class="modal-actions">
+        <button type="button" class="btn btn-danger btn-sm" id="btn-delete-emp"
+          style="display:none;margin-right:auto" onclick="deleteEmployee()">🗑 Excluir</button>
         <button type="button" class="btn btn-ghost" data-close="modal-emp">Cancelar</button>
         <button type="submit" class="btn btn-primary">Salvar</button>
       </div>
@@ -596,6 +598,7 @@ function openNewEmp() {
   document.getElementById('emp-pin').value = '';
   document.getElementById('pin-group').style.display = '';
   document.getElementById('active-group').style.display = 'none';
+  document.getElementById('btn-delete-emp').style.display = 'none';  // oculta no cadastro
   openModal('modal-emp');
 }
 
@@ -608,7 +611,24 @@ function openEditEmp(id, name, type, active) {
   document.getElementById('pin-group').style.display    = 'none';
   document.getElementById('active-group').style.display = '';
   document.getElementById('emp-active').checked = !!active;
+  document.getElementById('btn-delete-emp').style.display = '';  // exibe botão excluir
   openModal('modal-emp');
+}
+
+async function deleteEmployee() {
+  const id   = document.getElementById('emp-id').value;
+  const name = document.getElementById('emp-name').value;
+  if (!id) return;
+  if (!confirm(`⚠️ Excluir permanentemente "${name}"?\n\nIsso irá remover TODOS os registros de ponto e ajustes deste funcionário. Esta ação não pode ser desfeita.`)) return;
+  try {
+    await api('DELETE', `/api/rh/funcionario/${id}`);
+    closeModal('modal-emp');
+    toast(`Funcionário "${name}" excluído.`, 'success');
+    if (currentEmpId == id) showOverview();
+    else loadOverview();
+  } catch(err) {
+    toast(err.message, 'error');
+  }
 }
 
 document.getElementById('btn-new-emp').addEventListener('click', openNewEmp);

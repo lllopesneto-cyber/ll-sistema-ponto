@@ -183,6 +183,13 @@ app.put('/api/rh/funcionario/:id', requireHR, async (req, res) => {
   res.json({ success: true });
 });
 
+app.delete('/api/rh/funcionario/:id', requireHR, async (req, res) => {
+  const emp = await db.getEmployee(req.params.id);
+  if (!emp) return res.status(404).json({ error: 'Funcionário não encontrado' });
+  await db.deleteEmployee(req.params.id);
+  res.json({ success: true, name: emp.name });
+});
+
 app.put('/api/rh/funcionario/:id/pin', requireHR, async (req, res) => {
   if (!/^\d{4}$/.test(req.body.pin)) return res.status(400).json({ error: 'PIN deve ter 4 dígitos' });
   await db.updatePin(req.params.id, await bcrypt.hash(req.body.pin, 10));

@@ -80,6 +80,12 @@ module.exports = {
     run('UPDATE employees SET name=$1, type=$2, daily_minutes=$3, active=$4 WHERE id=$5', [name, type, daily_minutes, active, id]),
   updatePin: (id, pin_hash) =>
     run('UPDATE employees SET pin_hash=$1 WHERE id=$2', [pin_hash, id]),
+  deleteEmployee: async (id) => {
+    // Remove em cascade: ajustes → registros → funcionário
+    await run('DELETE FROM adjustments  WHERE employee_id=$1', [id]);
+    await run('DELETE FROM time_records WHERE employee_id=$1', [id]);
+    await run('DELETE FROM employees    WHERE id=$1',          [id]);
+  },
 
   getOpenRecord: (empId, date) =>
     q1('SELECT * FROM time_records WHERE employee_id=$1 AND record_date=$2 AND clock_out IS NULL ORDER BY id DESC LIMIT 1', [empId, date]),
