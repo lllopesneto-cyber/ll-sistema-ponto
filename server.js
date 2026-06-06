@@ -224,6 +224,18 @@ app.put('/api/rh/registro/:id', requireHR, async (req, res) => {
   res.json({ success: true });
 });
 
+app.post('/api/rh/registro', requireHR, async (req, res) => {
+  const { employee_id, record_date, clock_in, clock_out } = req.body;
+  if (!employee_id || !record_date || !clock_in) {
+    return res.status(400).json({ error: 'Funcionário, data e entrada são obrigatórios' });
+  }
+  const ci = record_date + 'T' + clock_in + ':00';
+  const co = clock_out ? record_date + 'T' + clock_out + ':00' : null;
+  const worked = co ? Math.max(0, Math.round((new Date(co) - new Date(ci)) / 60000)) : null;
+  await db.createRecord(employee_id, record_date, ci, co, worked);
+  res.json({ success: true });
+});
+
 // ── HR: manage HR users ───────────────────────────────────────────────────────
 
 app.get('/api/rh/usuarios', requireHR, async (req, res) => {

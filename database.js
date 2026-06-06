@@ -1,5 +1,10 @@
-const { Pool } = require('pg');
+const { Pool, types } = require('pg');
 const bcrypt = require('bcrypt');
+
+// Retorna datas/timestamps como strings puras — evita conversão UTC e bugs de fuso
+types.setTypeParser(1082, v => v);        // DATE         → 'YYYY-MM-DD'
+types.setTypeParser(1114, v => v);        // TIMESTAMP    → 'YYYY-MM-DD HH:MM:SS'
+types.setTypeParser(1184, v => v);        // TIMESTAMPTZ  → string
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -99,6 +104,9 @@ module.exports = {
     run('UPDATE time_records SET clock_out=$1, worked_minutes=$2 WHERE id=$3', [time, mins, recId]),
   updateRecord: (id, clock_in, clock_out, worked_minutes) =>
     run('UPDATE time_records SET clock_in=$1, clock_out=$2, worked_minutes=$3 WHERE id=$4', [clock_in, clock_out, worked_minutes, id]),
+  createRecord: (empId, date, clock_in, clock_out, worked_minutes) =>
+    run('INSERT INTO time_records (employee_id, record_date, clock_in, clock_out, worked_minutes) VALUES ($1,$2,$3,$4,$5)',
+        [empId, date, clock_in, clock_out, worked_minutes]),
   getRecords: (empId, start, end) =>
     q('SELECT * FROM time_records WHERE employee_id=$1 AND record_date BETWEEN $2 AND $3 ORDER BY record_date DESC, id DESC', [empId, start, end]),
   getTotalWorked: async (empId, start, end) => {

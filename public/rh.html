@@ -146,6 +146,7 @@
       <div class="card" style="margin-bottom:20px">
         <div class="card-header">
           <h3>Registros de Ponto</h3>
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="openNewTurno()">+ Novo Turno</button>
         </div>
         <div class="table-wrap">
           <table>
@@ -312,6 +313,37 @@
   </div>
 </div>
 
+<!-- Novo Turno Manual -->
+<div id="modal-turno" class="modal-backdrop hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="modal-turno">✕</button>
+    <h3>Novo Turno Manual</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">
+      Funcionário: <strong id="turno-emp-name">—</strong>
+    </p>
+    <form id="form-turno">
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" id="turno-date" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Entrada</label>
+          <input type="time" id="turno-in" required>
+        </div>
+        <div class="form-group">
+          <label>Saída (opcional)</label>
+          <input type="time" id="turno-out">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close="modal-turno">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar Turno</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Toast -->
 <div id="toast" class="hidden"></div>
 
@@ -329,17 +361,29 @@ function fmtAbs(mins) {
   const a = Math.abs(mins);
   return `${Math.floor(a/60)}h${String(a%60).padStart(2,'0')}min`;
 }
-function fmtTime(iso) {
-  if (!iso) return '—';
-  return new Date(iso).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+function timeStr(ts) {
+  // Extrai HH:MM de "YYYY-MM-DD HH:MM:SS" ou "YYYY-MM-DDTHH:MM:SS" — sem conversão UTC
+  if (!ts) return null;
+  const m = String(ts).match(/[T ](\d{2}:\d{2})/);
+  return m ? m[1] : null;
 }
-function fmtDate(dateStr) {
-  if (!dateStr) return '—';
-  return new Date(dateStr + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', weekday:'short' });
+function dateStr(ts) {
+  // Extrai YYYY-MM-DD de qualquer formato de data/timestamp
+  if (!ts) return null;
+  return String(ts).slice(0, 10);
 }
-function fmtDateFull(dateStr) {
-  if (!dateStr) return '—';
-  return new Date(dateStr + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+function fmtTime(ts) {
+  return timeStr(ts) || '—';
+}
+function fmtDate(ts) {
+  const d = dateStr(ts);
+  if (!d) return '—';
+  return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', weekday:'short' });
+}
+function fmtDateFull(ts) {
+  const d = dateStr(ts);
+  if (!d) return '—';
+  return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
 }
 function isToday(dateStr) {
   if (!dateStr) return false;
@@ -523,43 +567,41 @@ async function loadDetail() {
 }
 
 function renderRecords(records) {
+  _records = {};  // limpa e repopula o mapa global
+  records.forEach(r => { _records[r.id] = r; });
+
   const tbody = document.getElementById('records-body');
   if (!records.length) {
     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Nenhum registro neste período</td></tr>`;
     return;
   }
 
-  // Agrupa por data e insere separador visual por dia
   let lastDate = null;
   const rows = [];
   records.forEach(r => {
-    const dateStr = String(r.record_date).slice(0, 10);
-    if (dateStr !== lastDate) {
-      const todayMark = isToday(dateStr)
+    const d = dateStr(r.record_date);
+    if (d !== lastDate) {
+      const todayMark = isToday(d)
         ? ' <span style="background:var(--accent);color:#061510;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;margin-left:6px">Hoje</span>'
         : '';
       rows.push(`
         <tr>
-          <td colspan="5" style="
-            padding: 10px 14px 6px;
-            font-size: 11px; font-weight: 700; letter-spacing: .06em;
-            text-transform: uppercase; color: var(--accent);
-            border-bottom: 1px solid var(--border);
-            background: rgba(1,196,166,.04);
-          ">
-            📅 ${fmtDateFull(dateStr)}${todayMark}
+          <td colspan="5" style="padding:10px 14px 6px;font-size:11px;font-weight:700;
+            letter-spacing:.06em;text-transform:uppercase;color:var(--accent);
+            border-bottom:1px solid var(--border);background:rgba(1,196,166,.04)">
+            📅 ${fmtDateFull(d)}${todayMark}
           </td>
         </tr>`);
-      lastDate = dateStr;
+      lastDate = d;
     }
     rows.push(`
       <tr>
-        <td style="padding-left:28px;color:var(--muted);font-size:12px">${fmtDate(dateStr)}</td>
+        <td style="padding-left:28px;color:var(--muted);font-size:12px">${fmtDate(d)}</td>
         <td>${fmtTime(r.clock_in)}</td>
         <td>${r.clock_out ? fmtTime(r.clock_out) : '<span style="color:var(--warning)">Em andamento</span>'}</td>
         <td>${r.worked_minutes != null ? fmtAbs(r.worked_minutes) : '—'}</td>
         <td>
-          <button class="icon-btn" title="Editar" onclick="openEditRecord(${r.id},'${r.record_date}','${r.clock_in}','${r.clock_out||''}')">✏️</button>
+          <button class="icon-btn" title="Editar registro" onclick="openEditRecord(${r.id})">✏️</button>
         </td>
       </tr>`);
   });
@@ -731,22 +773,34 @@ async function deleteAjuste(id) {
 
 // ── Record edit ───────────────────────────────────────────────────────────────
 
-function openEditRecord(id, date, clockIn, clockOut) {
-  document.getElementById('record-id').value   = id;
-  document.getElementById('record-date').value = date;
-  document.getElementById('record-in').value   = clockIn ? clockIn.slice(11,16) : '';
-  document.getElementById('record-out').value  = clockOut ? clockOut.slice(11,16) : '';
+// Guarda registros do funcionário atual para acesso sem inline onclick
+let _records = {};
+
+function openEditRecord(id) {
+  const r = _records[id];
+  if (!r) return;
+  const d    = dateStr(r.record_date);
+  const tIn  = timeStr(r.clock_in);
+  const tOut = timeStr(r.clock_out);
+  document.getElementById('record-id').value     = id;
+  document.getElementById('record-date').value   = d   || '';
+  document.getElementById('record-in').value     = tIn  || '';
+  document.getElementById('record-out').value    = tOut || '';
+  // Mostra a data no título do modal para clareza
+  document.querySelector('#modal-record h3').textContent =
+    'Editar Registro — ' + (d ? fmtDateFull(d) : '');
   openModal('modal-record');
 }
 
 document.getElementById('form-record').addEventListener('submit', async e => {
   e.preventDefault();
-  const id    = document.getElementById('record-id').value;
-  const date  = document.getElementById('record-date').value;
-  const inT   = document.getElementById('record-in').value;
-  const outT  = document.getElementById('record-out').value;
-  const ci    = date + 'T' + inT + ':00';
-  const co    = outT ? date + 'T' + outT + ':00' : null;
+  const id   = document.getElementById('record-id').value;
+  const date = document.getElementById('record-date').value;   // YYYY-MM-DD
+  const inT  = document.getElementById('record-in').value;     // HH:MM
+  const outT = document.getElementById('record-out').value;    // HH:MM ou vazio
+  if (!date || !inT) return toast('Preencha a data e a entrada.', 'error');
+  const ci = date + 'T' + inT + ':00';
+  const co = outT ? date + 'T' + outT + ':00' : null;
   try {
     await api('PUT', `/api/rh/registro/${id}`, { clock_in: ci, clock_out: co });
     closeModal('modal-record');
@@ -844,6 +898,41 @@ document.getElementById('btn-logout').addEventListener('click', async () => {
     }
   } catch {}
 })();
+
+// ── Novo Turno Manual ─────────────────────────────────────────────────────────
+
+function openNewTurno() {
+  if (!currentEmpData) return;
+  document.getElementById('turno-emp-name').textContent = currentEmpData.employee.name;
+  // Data padrão = hoje
+  const today = new Date().toLocaleDateString('sv-SE', { timeZone:'America/Sao_Paulo' });
+  document.getElementById('turno-date').value = today;
+  document.getElementById('turno-in').value  = '';
+  document.getElementById('turno-out').value = '';
+  openModal('modal-turno');
+}
+
+document.getElementById('form-turno').addEventListener('submit', async e => {
+  e.preventDefault();
+  const emp_id = currentEmpData?.employee?.id;
+  const date   = document.getElementById('turno-date').value;
+  const inT    = document.getElementById('turno-in').value;
+  const outT   = document.getElementById('turno-out').value;
+  if (!emp_id || !date || !inT) return toast('Preencha a data e a entrada.', 'error');
+  try {
+    await api('POST', '/api/rh/registro', {
+      employee_id: emp_id,
+      record_date: date,
+      clock_in:    inT,
+      clock_out:   outT || null
+    });
+    closeModal('modal-turno');
+    toast('Turno registrado!', 'success');
+    loadDetail();
+  } catch(err) {
+    toast(err.message, 'error');
+  }
+});
 </script>
 </body>
 </html>
